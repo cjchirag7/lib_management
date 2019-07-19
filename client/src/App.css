@@ -1,0 +1,53 @@
+.row-header{
+    margin:0px auto;
+    padding:0px auto;
+}
+
+body{
+background-color: rgba(1, 11, 20, 0.007);
+width: 100vw;
+}
+
+.row-content {
+    margin:0px auto;
+    padding: 50px 0px 50px 0px;
+    border-bottom: 1px ridge;
+    min-height:400px;
+}
+
+.footer{
+    background-color: rgb(95, 148, 216);
+  }
+
+  .home{
+      background-image: url('./images/walllpaper.jpg');
+      min-height: 100vh;
+      min-width: 99vw;
+    }
+
+  .darkbg{
+      background-color: black;
+      opacity: 0.7;
+      color: white;
+      size: 4rem;
+  }
+
+  table, th, td {
+    border: 1px solid white;
+  }
+
+  table {
+      min-width: 40%
+  }
+
+  .heading{
+      margin-top: 70px;
+  }
+
+  .full{
+      min-height: 100vh;
+  }
+
+  .Option{
+      cursor: pointer;
+  }
