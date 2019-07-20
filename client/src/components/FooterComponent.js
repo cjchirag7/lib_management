@@ -10,17 +10,8 @@ class Footer extends Component {
 
 render(){
     return(
-    <div className="footer">
-    <div className="container">
-        <div className="row justify-content-center">             
-                <div className="col-auto">
-                    <br/>
-                    <p>© Copyright 2019 Chirag Jain</p>
-                </div>
-            </div>
-        </div>
-         </div>
-    );
+                    <p className="footer" align="center">© Copyright 2019 Chirag Jain</p>
+          );
 }
 
 }

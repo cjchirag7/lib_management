@@ -17,7 +17,10 @@ width: 100vw;
 
 .footer{
     background-color: rgb(95, 148, 216);
+    height: 25px;
+    margin: auto;
   }
+
 
   .home{
       background-image: url('./images/walllpaper.jpg');

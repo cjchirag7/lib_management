@@ -9,7 +9,7 @@ import {Switch,Route,Redirect, withRouter} from 'react-router-dom';
 //import {BOOKS} from '../backup/books';
 import {connect} from 'react-redux';
 import {Modal,ModalBody,ModalHeader,Button, Label, Col, Row} from 'reactstrap';
-import { postBook, fetchBooks, editBook, deleteBook} from '../redux/ActionCreators';
+import { postBook, fetchBooks, editBook, deleteBook,loginUser, logoutUser, registerUser} from '../redux/ActionCreators';
 import { Control, LocalForm, Errors  } from 'react-redux-form';
 
 const required = (val) => val && val.length;
@@ -22,7 +22,8 @@ const isNumber = (val) => !isNaN(Number(val));
 
 const mapStateToProps= (state)=>{
   return{
-    books: state.books   
+    books: state.books,
+    auth: state.auth 
   };
 }
 
@@ -30,7 +31,10 @@ const mapDispatchToProps = dispatch => ({
   fetchBooks: () => { dispatch(fetchBooks())},
   postBook: (name, author, description, isbn, cat, floor, shelf, copies) => dispatch(postBook(name, author, description, isbn, cat, floor, shelf, copies)),
   editBook: (_id, name, author, description, isbn, cat, floor, shelf, copies) => dispatch(editBook(_id, name, author, description, isbn, cat, floor, shelf, copies)),
-  deleteBook: (_id) =>  dispatch(deleteBook(_id))
+  deleteBook: (_id) =>  dispatch(deleteBook(_id)),
+  loginUser: (creds) => dispatch(loginUser(creds)),
+  logoutUser: () => dispatch(logoutUser()),
+  registerUser: (creds) => dispatch(registerUser(creds))
 });
 
 class Main extends Component {
@@ -42,8 +46,6 @@ class Main extends Component {
     constructor(props){
         super(props);
         this.state={
-          isAdmin: false,
-          isSignedIn: false,
           isDeleteModalOpen: false,
           isEditModalOpen: false,
           selectedBook: null
@@ -85,6 +87,7 @@ class Main extends Component {
           errMess={this.props.books.errMess||notFoundErr}
           toggleEditModal={this.toggleEditModal}
           changeSelected={this.changeSelected}
+          isAdmin={(this.props.auth.userinfo==null)?false:(this.props.auth.userinfo.admin)}
           />
           );
       };
@@ -92,28 +95,34 @@ class Main extends Component {
     
     return ( 
           <div className="App">
-          <Header isSignedIn={this.state.isSignedIn}/>
+          <Header auth={this.props.auth} 
+          loginUser={this.props.loginUser} 
+          logoutUser={this.props.logoutUser}
+          registerUser={this.props.registerUser}
+          />
           <Switch location={this.props.location}>
                       <Route exact path='/home' component={() => <Home />} />
                       <Route exact path='/search' component={() => <Search 
                       books={this.props.books.books}
                       booksLoading={this.props.books.isLoading}
                       booksErrMess={this.props.books.errMess}
-                      isSignedIn={this.state.isSignedIn}
+                      isSignedIn={this.props.auth.isAuthenticated}
+                      isAdmin={(this.props.auth.userinfo==null)?false:(this.props.auth.userinfo.admin)}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
                       changeSelected={this.changeSelected}
-                      isAdmin={this.state.isAdmin}/>}/>
+                />}/>
 
                       <Route exact path='/books' component={() => <Booklist
                       books={this.props.books.books}
                       booksLoading={this.props.books.isLoading}
                       booksErrMess={this.props.books.errMess}
-                      isSignedIn={this.state.isSignedIn}
+                      isSignedIn={this.props.auth.isAuthenticated}
+                      isAdmin={(this.props.auth.userinfo==null)?false:(this.props.auth.userinfo.admin)}
+                      auth={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}
-                      isAdmin={this.state.isAdmin}/>}/>
+                      changeSelected={this.changeSelected}/>}/>
                       <Route path='/books/:bookId' component={BookWithId} />
                       <Redirect to="/home"/>
           </Switch>

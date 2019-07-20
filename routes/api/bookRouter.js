@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose=require('mongoose');
 const bookRouter = express.Router();
+const authenticate=require('../../authenticate');
 const cors = require('../cors');
 const Books=require('../../models/books');
 bookRouter.use(bodyParser.json());
@@ -18,7 +19,7 @@ bookRouter.route('/')
     },(err)=>(next(err)))
     .catch((err)=>(next(err)))
 })
-.post(cors.corsWithOptions,(req, res, next) => {
+.post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     Books.create(req.body)
     .then((book)=>{
         console.log('Book created'+book);
@@ -28,11 +29,11 @@ bookRouter.route('/')
     },(err)=>(next(err)))
     .catch((err)=>(next(err))) 
 })
-.put(cors.corsWithOptions,(req, res, next) => {
+.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /books');
 })
-.delete(cors.corsWithOptions,(req, res, next) => {
+.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     res.statusCode = 403;
     res.end('DELETE operation not supported on /books');
 
@@ -59,12 +60,12 @@ bookRouter.route('/:bookId')
     .catch((err)=>(next(err)));
 })
 
-.post(cors.corsWithOptions,(req, res, next) => {
+.post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /books/'+ req.params.bookId);
 })
 
-.put(cors.corsWithOptions,(req, res, next) => {
+.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
  Books.findByIdAndUpdate(req.params.bookId,{
      $set: req.body
  },{new: true})
@@ -76,7 +77,7 @@ bookRouter.route('/:bookId')
 .catch((err) => res.status(400).json({success: false}));
 })
 
-.delete(cors.corsWithOptions,(req, res, next) => {
+.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     Books.findByIdAndRemove(req.params.bookId)
     .then((resp) => {
         res.statusCode = 200;

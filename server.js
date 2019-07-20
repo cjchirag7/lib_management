@@ -2,9 +2,13 @@ const express=require('express');
 const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
 const path=require('path');
+var passport = require('passport');
+var authenticate = require('./authenticate');
+
 
 // Loading routers
-const bookRouter = require('./routes/api/bookRouter')
+const bookRouter = require('./routes/api/bookRouter');
+const userRouter = require('./routes/api/userRouter')
 
 const app= express();
 
@@ -29,9 +33,11 @@ mongoose.connect(mongoURI,{ useNewUrlParser: true, useCreateIndex: true })
 .then(()=> {console.log("MongoDB Connected");})
 .catch(err => console.log(err));
 
+app.use(passport.initialize());
 
 // Use routes
 app.use('/api/books',bookRouter);
+app.use('/api/users',userRouter);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
