@@ -20,8 +20,8 @@ export const postBook = (name, author, description, isbn, cat, floor, shelf, cop
         headers: {
           "Content-Type": "application/json",
           'Authorization': bearer
-        },
-        credentials: "cross-origin"
+        }
+        //,        credentials: "cross-origin"
     })
     .then(response => {
         if (response.ok) {
@@ -50,9 +50,9 @@ export const editBook = (_id, name, author, description, isbn, cat, floor, shelf
   };
   const bearer = 'Bearer ' + localStorage.getItem('token');
   return fetch(baseUrl + 'books/' + _id, {
-      method: "PUT",
-     credentials: 'cross-origin',
-      body: JSON.stringify(newBook),
+      method: "PUT"
+      //,     credentials: 'cross-origin'
+      ,      body: JSON.stringify(newBook),
       headers: {
         "Content-Type": "application/json",
         'Authorization': bearer
@@ -79,9 +79,8 @@ export const deleteBook = (_id) => (dispatch) => {
   
   const bearer = 'Bearer ' + localStorage.getItem('token');    
   return fetch(baseUrl + 'books/' + _id, {
-      method: "DELETE",
-       credentials: "cross-origin",
-       headers: {
+      method: "DELETE"//,       credentials: "cross-origin"
+      ,       headers: {
         'Authorization': bearer
       }
   })
@@ -106,7 +105,7 @@ export const fetchBooks = () => (dispatch) => {
   const bearer = 'Bearer ' + localStorage.getItem('token');
     dispatch(booksLoading(true));
     return fetch(baseUrl+'books',{
-      credentials: "cross-origin",
+//      credentials: "cross-origin",
        headers: {
         'Authorization': bearer
       } 
