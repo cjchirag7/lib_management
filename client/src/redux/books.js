@@ -17,6 +17,25 @@ const Books = (state = { isLoading: true,
             var book = action.payload;
             return { ...state, books: state.books.concat(book)};
 
+        case ActionTypes.EDIT_BOOK:
+            var newbook = action.payload;
+            return { ...state, books: state.books.map((book)=>
+                {
+                if(book._id===newbook._id)
+                {
+                    return newbook;
+                }
+            else {
+                    return book;
+            }
+                 })
+                }
+
+        case ActionTypes.DELETE_BOOK:
+        var resp = action.payload;
+        return { ...state, books: state.books.filter((book)=>{
+            return book._id!==resp._id}) }
+
         default:
             return state;
     }

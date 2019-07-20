@@ -4,13 +4,13 @@ import {Link} from 'react-router-dom';
 import Loading from './LoadingComponent.js';
 
 // RenderMenuItem is a functional component
-function RenderBook ({book, onClick,isAdmin, editBook}) {
+function RenderBook ({book, changeSelected ,isAdmin, toggleDeleteModal,toggleEditModal}) {
     return (
             <React.Fragment>
             <td>
             {book.isbn}
             </td>
-            <td>
+            <td onClick={()=>{changeSelected(book._id); }}>
             <Link to={`/books/${book.name}`}>
             {book.name}
             </Link>
@@ -21,7 +21,9 @@ function RenderBook ({book, onClick,isAdmin, editBook}) {
             <td>
                 {book.copies}
             </td>
-            {isAdmin?(<td className="Option" onClick={()=>{editBook(book.name)();}}><span className="fa fa-pencil"/></td>):(<React.Fragment/>)}
+            {!isAdmin?(<td><span onClick={()=>{changeSelected(book._id); toggleEditModal(); }} className="Option fa fa-pencil"/>
+                          &nbsp; &nbsp; <span onClick={()=>{changeSelected(book._id); toggleDeleteModal();}} className="Option fa fa-trash"/>
+                        </td>):(<React.Fragment/>)}
             </React.Fragment>
        );
 }
@@ -35,11 +37,19 @@ class Booklist extends Component {
         }
     }
 
+
+    componentDidMount() {
+        window.scrollTo(0, 0)
+      }
+      
 render(){
     const list = this.props.books.map((book) => {
         return (
                 <tr key={book.name}>
-                    <RenderBook book={book} isAdmin={this.props.isAdmin}/>
+                    <RenderBook book={book} isAdmin={this.props.isAdmin} changeSelected={this.props.changeSelected}
+                    toggleDeleteModal={this.props.toggleDeleteModal}
+                    toggleEditModal={this.props.toggleEditModal}
+                    />
                 </tr>
         );
     });
@@ -78,7 +88,7 @@ render(){
             <th>Name of Book</th>
             <th>Authors</th>
             <th>Copies available</th>
-            {this.props.isAdmin?(<th>Edit</th>):(<React.Fragment/>)}
+            {!this.props.isAdmin?(<th>Edit / <br/>Delete</th>):(<React.Fragment/>)}
           </tr>
         </thead>
         <tbody>

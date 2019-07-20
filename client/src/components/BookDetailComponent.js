@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
 import { Card, CardText, CardHeader, CardFooter, CardBody,CardTitle } from 'reactstrap';
-function RenderBook({book,editBook,isAdmin}) {
+function RenderBook({book,isAdmin,toggleEditModal}) {
     if (book != null)
         return(
         <Card>
        
        <CardHeader tag="h3">{book.name} &nbsp; &nbsp; &nbsp;&nbsp;
-       {isAdmin?(<span className="fa fa-pencil Option" onClick={()=>{editBook(book.name)();}}/>):(<React.Fragment/>)}
+       {!isAdmin?(<span className="fa fa-pencil Option" onClick={()=>{toggleEditModal();}}/>):(<React.Fragment/>)}
         </CardHeader>
         <CardBody>
           <CardTitle align="right"> - {book.author}</CardTitle>
@@ -46,7 +46,8 @@ render(){
         <div className="row heading">
           <div className="col-12">
           <br/>        <br/>
-          <RenderBook book={this.props.book} isAdmin={this.props.isAdmin}>
+          <RenderBook book={this.props.book} isAdmin={this.props.isAdmin}
+                    toggleEditModal={this.props.toggleEditModal}>
               </RenderBook>
           </div>
         </div>
