@@ -32,9 +32,10 @@ render(){
     <tr> <td>Closing Time </td> <td> 9.00 P.M.</td></tr>
             </table>
             <br/>
-            <br/><br/>
             <br/>
-            </div>
+                </div>
+                <br/><br/>
+                <br/><br/><br/>
             </div>
         );
 }
