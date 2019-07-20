@@ -4,16 +4,19 @@ import {Link} from 'react-router-dom';
 import Loading from './LoadingComponent.js';
 
 // RenderMenuItem is a functional component
-function RenderBook ({book, changeSelected ,isAdmin, toggleDeleteModal,toggleEditModal}) {
+function RenderBook ({book, changeSelected ,isAdmin, toggleDeleteModal,toggleEditModal,i}) {
     return (
             <React.Fragment>
             <td>
-            {book.isbn}
+            {i}
             </td>
-            <td onClick={()=>{changeSelected(book._id); }}>
-            <Link to={`/books/${book.name}`}>
+            <td>
+            <Link to={`/books/${book._id}`}>
             {book.name}
             </Link>
+            </td>
+            <td>
+            {book.isbn}
             </td>
             <td>
                 {book.author}
@@ -21,7 +24,7 @@ function RenderBook ({book, changeSelected ,isAdmin, toggleDeleteModal,toggleEdi
             <td>
                 {book.copies}
             </td>
-            {!isAdmin?(<td><span onClick={()=>{changeSelected(book._id); toggleEditModal(); }} className="Option fa fa-pencil"/>
+            {isAdmin?(<td><span onClick={()=>{changeSelected(book._id); toggleEditModal(); }} className="Option fa fa-pencil"/>
                           &nbsp; &nbsp; <span onClick={()=>{changeSelected(book._id); toggleDeleteModal();}} className="Option fa fa-trash"/>
                         </td>):(<React.Fragment/>)}
             </React.Fragment>
@@ -35,6 +38,7 @@ class Booklist extends Component {
         super(props);
         this.state={
         }
+        this.i=1;
     }
 
 
@@ -49,6 +53,7 @@ render(){
                     <RenderBook book={book} isAdmin={this.props.isAdmin} changeSelected={this.props.changeSelected}
                     toggleDeleteModal={this.props.toggleDeleteModal}
                     toggleEditModal={this.props.toggleEditModal}
+                    i={this.i++}
                     />
                 </tr>
         );
@@ -64,10 +69,11 @@ render(){
     }
     else if (this.props.booksErrMess) {
         return(
-            <div className="container">
+            <div className="container loading">
                 <div className="row heading"> 
                     <div className="col-12">
-                        <h4>{this.props.booksErrMess}</h4>
+                        <br/><br/><br/><br/>
+                        <h3>{this.props.booksErrMess}</h3>
                     </div>
                 </div>
             </div>
@@ -84,11 +90,12 @@ render(){
              <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>ISBN number</th>
+            <th>S.No.</th>
             <th>Name of Book</th>
+            <th>ISBN number</th>
             <th>Authors</th>
             <th>Copies available</th>
-            {!this.props.isAdmin?(<th>Edit / <br/>Delete</th>):(<React.Fragment/>)}
+            {this.props.isAdmin?(<th>Edit / <br/>Delete</th>):(<React.Fragment/>)}
           </tr>
         </thead>
         <tbody>

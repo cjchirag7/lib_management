@@ -74,12 +74,17 @@ class Main extends Component {
 
     render(){
       const BookWithId = ({match}) => {
-      
-        return(
-          <BookDetail book={this.props.books.books.filter((book) => (book.name)===(match.params.bookName))[0]}
+      let selectedBook=this.props.books.books.filter((book) => (book._id)===(match.params.bookId))[0]
+      let notFoundErr=null;
+      if(selectedBook===undefined){
+      notFoundErr=("\n\n Error 404 :  Book not found");
+      }  
+      return(
+          <BookDetail book={selectedBook}
           isLoading={this.props.books.isLoading}
-          errMess={this.props.books.errMess}
+          errMess={this.props.books.errMess||notFoundErr}
           toggleEditModal={this.toggleEditModal}
+          changeSelected={this.changeSelected}
           />
           );
       };
@@ -109,7 +114,7 @@ class Main extends Component {
                       toggleDeleteModal={this.toggleDeleteModal}
                       changeSelected={this.changeSelected}
                       isAdmin={this.state.isAdmin}/>}/>
-                      <Route path='/books/:bookName' component={BookWithId} />
+                      <Route path='/books/:bookId' component={BookWithId} />
                       <Redirect to="/home"/>
           </Switch>
         <Footer/>

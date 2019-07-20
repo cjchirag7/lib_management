@@ -51,3 +51,7 @@ width: 100vw;
   .Option{
       cursor: pointer;
   }
+
+  .loading{
+min-height: 100vh;
+  }

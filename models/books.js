@@ -20,7 +20,8 @@ const bookSchema = new Schema({
         type: String,
         minlength: 10,
         maxlength: 13,
-        required: true
+        required: true,
+        unique: true
     },
     cat: {
         type: String,
