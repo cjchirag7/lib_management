@@ -91,7 +91,7 @@ class Header extends Component{
                                     { !this.props.auth.isAuthenticated ?
                         <Button outline color="primary" onClick={this.toggleModal}>
                                             <span className="fa fa-sign-in fa-lg"></span> Login
-                                            {this.props.auth.isFetching ?
+                                            {this.props.auth.isLoading ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }
@@ -101,7 +101,7 @@ class Header extends Component{
                                         <div className="navbar-text mr-3">{this.props.auth.user.username}</div>
                                         <Button outline color="primary" onClick={this.handleLogout}>
                                             <span className="fa fa-sign-out fa-lg"></span> Logout
-                                            {this.props.auth.isFetching ?
+                                            {this.props.auth.isLoading ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }
@@ -109,9 +109,7 @@ class Header extends Component{
                                         </div>
                                     }
 
-                       </NavItem>
-                           
-                     <NavItem className="ml-2 mb-1">
+
                     <Registerer isSignedIn={this.props.auth.isAuthenticated} toggleRegister={()=>{this.toggleRegister()}}/>
                      </NavItem>
                       </Nav>
