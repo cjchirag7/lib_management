@@ -7,7 +7,7 @@ function RenderBook({book,isAdmin,toggleEditModal,changeSelected}) {
         <Card>
        
        <CardHeader tag="h3">{book.name} &nbsp; &nbsp; &nbsp;&nbsp;
-       {!isAdmin?(<span className="fa fa-pencil Option" onClick={()=>{changeSelected(book._id);toggleEditModal();}}/>):(<React.Fragment/>)}
+       {isAdmin?(<span className="fa fa-pencil Option" onClick={()=>{changeSelected(book._id);toggleEditModal();}}/>):(<React.Fragment/>)}
         </CardHeader>
         <CardBody>
           <CardTitle align="right"> - {book.author}</CardTitle>

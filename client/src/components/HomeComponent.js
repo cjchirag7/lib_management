@@ -31,6 +31,9 @@ render(){
     <tr> <td><h6>Opening Time</h6> </td> <td> <h6>9.00 A.M.</h6></td></tr>
     <tr> <td>Closing Time </td> <td> 9.00 P.M.</td></tr>
             </table>
+            <br/>
+            <br/><br/>
+            <br/>
             </div>
             </div>
         );
