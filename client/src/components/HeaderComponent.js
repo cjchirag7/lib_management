@@ -1,6 +1,12 @@
 import React,{Component} from 'react';
 import {Navbar, Form, FormGroup, Label, Input, Nav, NavbarToggler,Collapse,NavItem, NavbarBrand, Modal, ModalBody, ModalHeader, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import { Control, LocalForm, Errors  } from 'react-redux-form';
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => (val) && (val.length >= len);
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 
   function Registerer(props){
@@ -71,10 +77,15 @@ class Header extends Component{
                     <div className="container">
                      <NavbarToggler onClick={this.toggleNav}></NavbarToggler>
                      <NavbarBrand className="mr-auto text-primary" href="/home">
-                     <span className="fa fa-home fa-lg"/> Home
+                     Central Library
                      </NavbarBrand>
                      <Collapse isOpen={this.state.isNavOpen} navbar>
                      <Nav navbar>
+                        <NavItem className="ml-2">
+                            <NavLink className="nav-link text-primary" to="/home">
+                               <span className="fa fa-home fa-lg"/> Home
+                           </NavLink>
+                        </NavItem>
                         <NavItem className="ml-2">
                             <NavLink className="nav-link text-primary" to="/books">
                                 <span className="fa fa-book fa-lg"/> Books
@@ -141,47 +152,68 @@ class Header extends Component{
                          Register 
                      </ModalHeader>
                      <ModalBody>
-                     <Form onSubmit={(e)=>{this.handleRegister();
+                     <LocalForm model="user" onSubmit={(values) => {
+                   /*      if((this.username.value.trim()=="")||(this.password.value.trim()=="")
+                         ||(this.roll.value.trim()=="")||(this.email.value.trim()=="")
+                         ||(this.firstname.value.trim()=="")||(this.lastname.value.trim()==""))
+                         {
+                             alert('Fill all the required * fields');
+                         }
+                         else if(this.email.value.trim)
+                        */
+                           this.toggleRegister();
                             this.props.registerUser({
-                              username: this.username.value,
-                               password: this.password.value,
-                               email: this.email.value,
-                               roll: this.roll.value,
-                               firstname: this.firstname.value,
-                               lastname: this.lastname.value, });
-                              e.preventDefault(); }}>
+                              username: values.username,
+                               password: values.password,
+                               email: values.email,
+                               roll: values.roll,
+                               firstname: values.firstname,
+                               lastname: values.lastname });
+                              }}>
                             <FormGroup>
                                 <Label htmlFor="username">Username</Label>
-                                <Input type="text" id="username" name="username"
-                                    innerRef={(input) => this.username = input} />
+                                <Control.text model=".username" id="username" name="username" 
+                            className="form-control" placeholder="Username" validators={{required,minLength: minLength(3),maxLength:maxLength(20)}} />
+                            <Errors className="text-danger" model=".username" show="touched" messages={{required: 'Required',
+                            minLength: ' Must be greater than 2 characters', maxLength:' Must be 20 characters or less'}}/>
                             </FormGroup>
                             <FormGroup>
-                                <Label htmlFor="password">Password</Label>
-                                <Input type="password" id="password" name="password"
-                                    innerRef={(input) => this.password = input}  />
+                            <Label htmlFor="password">Password</Label>
+                                <Control.password model=".password" id="password" name="password" 
+                            className="form-control" placeholder="password" validators={{required,minLength: minLength(6),maxLength:maxLength(20)}} />
+                            <Errors className="text-danger" model=".password" show="touched" messages={{required: 'Required',
+                            minLength: ' Must be greater than 5 characters', maxLength:' Must be 20 characters or less'}}/>
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="firstname">First Name</Label>
-                                <Input type="text" id="firstname" name="firstname"
-                                    innerRef={(input) => this.firstname = input} />
+                                <Control.text model=".firstname" id="firstname" name="firstname" 
+                            className="form-control" placeholder="firstname" validators={{required,minLength: minLength(3),maxLength:maxLength(20)}} />
+                            <Errors className="text-danger" model=".firstname" show="touched" messages={{required: 'Required',
+                            minLength: ' Must be greater than 2 characters', maxLength:' Must be 20 characters or less'}}/>
                             </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="lastname">Last Name</Label>
-                                <Input type="lastname" id="lastname" name="lastname"
-                                    innerRef={(input) => this.lastname = input}  />
+                            <FormGroup>    
+                                 <Label htmlFor="lastname">Last Name</Label>
+                                <Control.text model=".lastname" id="lastname" name="lastname" 
+                            className="form-control" placeholder="lastname" validators={{required,minLength: minLength(3),maxLength:maxLength(20)}} />
+                            <Errors className="text-danger" model=".lastname" show="touched" messages={{required: 'Required',
+                            minLength: ' Must be greater than 2 characters', maxLength:' Must be 20 characters or less'}}/>
                             </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="roll">Roll no</Label>
-                                <Input type="text" id="roll" name="roll"
-                                    innerRef={(input) => this.roll = input} />
+                            <FormGroup>    
+                                 <Label htmlFor="roll">Roll No.</Label>
+                                <Control.text model=".roll" id="roll" name="roll" 
+                            className="form-control" placeholder="roll" validators={{required,minLength: minLength(3),maxLength:maxLength(12)}} />
+                            <Errors className="text-danger" model=".roll" show="touched" messages={{required: 'Required',
+                            minLength: ' Must be greater than 2 characters', maxLength:' Must be 12 characters or less'}}/>
                             </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="email">Email</Label>
-                                <Input type="email" id="email" name="email"
-                                    innerRef={(input) => this.email = input}  />
+                            <FormGroup>    
+                                 <Label htmlFor="email">E-mail</Label>
+                                <Control.text model=".email" id="email" name="email" 
+                            className="form-control" placeholder="email" validators={{required,validEmail}} />
+                            <Errors className="text-danger" model=".email" show="touched" messages={{required: 'Required',
+                            validEmail: ' Enter a valid email'}}/>
                             </FormGroup>
                             <Button type="submit" value="submit" color="primary">Sign Up</Button>
-                        </Form>
+                        </LocalForm>
                      </ModalBody>
                  </Modal>
                 </React.Fragment>
