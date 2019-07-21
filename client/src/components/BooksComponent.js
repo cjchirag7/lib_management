@@ -58,7 +58,6 @@ render(){
                 </tr>
         );
     });
-    console.log("this.isAdmin="+this.isAdmin+'\n auth :');
     console.log(this.props.auth);
     if (this.props.booksLoading) {
         return(

@@ -5,11 +5,13 @@ import Home from './HomeComponent.js';
 import Booklist from './BooksComponent.js';
 import Search from './SearchComponent.js';
 import BookDetail from './BookDetailComponent.js';
+import Profile from './ProfileComponent.js';
+import AddBook from './AddBookComponent.js';
+
 import {Switch,Route,Redirect, withRouter} from 'react-router-dom';
-//import {BOOKS} from '../backup/books';
 import {connect} from 'react-redux';
 import {Modal,ModalBody,ModalHeader,Button, Label, Col, Row} from 'reactstrap';
-import { postBook, fetchBooks, editBook, deleteBook,loginUser, logoutUser, registerUser} from '../redux/ActionCreators';
+import { postBook, fetchBooks, editBook, deleteBook,loginUser, logoutUser, registerUser, editUser, editPassword} from '../redux/ActionCreators';
 import { Control, LocalForm, Errors  } from 'react-redux-form';
 
 const required = (val) => val && val.length;
@@ -34,7 +36,9 @@ const mapDispatchToProps = dispatch => ({
   deleteBook: (_id) =>  dispatch(deleteBook(_id)),
   loginUser: (creds) => dispatch(loginUser(creds)),
   logoutUser: () => dispatch(logoutUser()),
-  registerUser: (creds) => dispatch(registerUser(creds))
+  registerUser: (creds) => dispatch(registerUser(creds)),
+  editUser: (_id, firstname, lastname, roll, email) => dispatch(editUser(_id, firstname, lastname, roll, email)),
+  editPassword : (_id,username,password) => dispatch(editPassword(_id,username,password))
 });
 
 class Main extends Component {
@@ -92,7 +96,17 @@ class Main extends Component {
           );
       };
             
-    
+      const PrivateRoute = ({ component: Component, ...rest }) => (
+        <Route {...rest} render={(props) => (
+          this.props.auth.isAuthenticated
+            ? <Component {...props} />
+            : <Redirect to={{
+                pathname: '/home',
+                state: { from: props.location }
+              }} />
+        )} />
+      );
+
     return ( 
           <div className="App">
           <Header auth={this.props.auth} 
@@ -111,7 +125,8 @@ class Main extends Component {
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
                       changeSelected={this.changeSelected}
-                />}/>
+                />}
+                />
 
                       <Route exact path='/books' component={() => <Booklist
                       books={this.props.books.books}
@@ -124,6 +139,22 @@ class Main extends Component {
                       toggleDeleteModal={this.toggleDeleteModal}
                       changeSelected={this.changeSelected}/>}/>
                       <Route path='/books/:bookId' component={BookWithId} />
+                      <PrivateRoute exact path='/profile' component={() => <Profile
+                      auth={this.props.auth}
+                      editUser={this.props.editUser} 
+                      editPassword={this.props.editPassword}/>
+                      }
+                      />
+                       <PrivateRoute exact path='/add_book' component={() => <AddBook
+                      isAdmin={(this.props.auth.userinfo==null)?false:(this.props.auth.userinfo.admin)}
+                      postBook={this.props.postBook}
+                      />
+                      }/>
+                      <Route path='/books/:bookId' component={BookWithId} />
+                      <PrivateRoute exact path='/profile' component={() => <Profile
+                      auth={this.props.auth}
+                      editUser={this.props.editUser} />}
+                      />
                       <Redirect to="/home"/>
           </Switch>
         <Footer/>

@@ -10,7 +10,8 @@ const cors = require('../cors');
 router.use(bodyParser.json());
 
 /* GET users listing. */
-router.options('*', cors.corsWithOptions, (req, res) => { res.sendStatus(200); } )
+router.options('*', cors.corsWithOptions, (req, res) => { res.sendStatus(200); 
+  res.setHeader('Access-Control-Allow-Credentials', 'true');} )
 router.get('/', cors.corsWithOptions, authenticate.verifyUser
                 ,authenticate.verifyAdmin,
                   function(req, res, next) {
@@ -23,6 +24,41 @@ router.get('/', cors.corsWithOptions, authenticate.verifyUser
                       .catch((err)=>(next(err)))
                   }
 );
+
+router.put('/:userId',cors.corsWithOptions,authenticate.verifyUser,
+function(req,res,next){
+  User.findByIdAndUpdate(req.params.userId,{
+    $set: req.body
+},{new: true})
+.then((user) => {
+   res.statusCode = 200;
+   res.setHeader('Content-Type', 'application/json');
+   res.json(user);
+}, (err) => next(err))
+.catch((err) => res.status(400).json({success: false}));
+})
+
+// For change of password
+router.put('/password/:userId',cors.corsWithOptions,authenticate.verifyUser,
+function(req,res,next){
+  User.findById(req.params.userId)
+.then((user) => {
+  if(user&&!user.admin){
+    user.setPassword(req.body.password, function(){
+
+      user.save();
+       res.status(200).json({message: 'password changed successfully'});
+  });
+  }
+  else if(!user){
+    res.status(500).json({message: "User doesn't exist"});      
+  }
+  else{
+    res.status(400).json({message: "Password of an admin can't be changed this way.\nContact the webmaster"});
+  }
+}, (err) => next(err))
+.catch((err) => res.status(400).json({message: 'Internal Server Error'}));
+})
 
 
 router.post('/signup',cors.corsWithOptions, (req, res, next) => {

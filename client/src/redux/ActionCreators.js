@@ -13,6 +13,7 @@ export const postBook = (name, author, description, isbn, cat, floor, shelf, cop
         cat: cat, floor: floor, 
         shelf: shelf, copies: copies
     };
+    console.log(newBook);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'books', {
         method: "POST",
@@ -36,8 +37,9 @@ export const postBook = (name, author, description, isbn, cat, floor, shelf, cop
             throw error;
       })
     .then(response => response.json())
-    .then(response => dispatch(addBook(response)))
-    .catch(error =>  { console.log('post books', error.message); alert('Your book could not be posted\nError: '+error.message); });
+    .then(response => { alert('Book added successfully');
+      return  dispatch(addBook(response));})
+    .catch(error =>  { console.log('Add book', error.message); alert('Your book could not be added\nError: '+error.message); });
 };
 
 export const editBook = (_id, name, author, description, isbn, cat, floor, shelf, copies) => (dispatch) => {
@@ -73,6 +75,76 @@ export const editBook = (_id, name, author, description, isbn, cat, floor, shelf
   .then(response => (dispatch(editBookdispatch(response))))
   .catch(error =>  {  console.log(baseUrl + 'books/' + _id);
   alert('Your book could not be edited\nError: '+error.message); });
+};
+
+export const editPassword = (_id,username,password) => (dispatch) => {
+  const bearer = 'Bearer ' + localStorage.getItem('token');
+  return fetch(baseUrl + 'users/password/' + _id, {
+    method: "PUT"
+  //  ,     credentials: 'same-origin'
+    ,      body: JSON.stringify({password: password}),
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': bearer
+    } })
+.then(response => {
+    if (response.ok) {
+      return response;
+    } else {
+      var error = new Error('Error ' + response.status + ': ' + response.statusText+'\n ');
+      error.response = response;
+      throw error;
+    }
+  },
+  error => {
+        throw error;
+  })
+.then(response => response.json())
+.then(response => { 
+  let newCreds={username: username, password: password};
+  localStorage.removeItem('creds');
+  localStorage.setItem('creds', JSON.stringify(newCreds));
+  alert('Password changed successfully');
+  return dispatch(editPasswordDispatch(newCreds));})
+.catch(error =>  {  
+alert('Your password could not be changed\nError: '+error.message); });
+}
+
+export const editUser = (_id, firstname, lastname, roll, email) => (dispatch) => {
+
+  const newUser = {
+firstname: firstname,
+lastname: lastname,
+roll: roll,
+email: email  };
+  const bearer = 'Bearer ' + localStorage.getItem('token');
+  return fetch(baseUrl + 'users/' + _id, {
+      method: "PUT"
+    //  ,     credentials: 'same-origin'
+      ,      body: JSON.stringify(newUser),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': bearer
+      } })
+  .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          throw error;
+    })
+  .then(response => response.json())
+  .then(response => { 
+    localStorage.removeItem('userinfo');
+    localStorage.setItem('userinfo', JSON.stringify(response));
+    return dispatch(editUserdispatch(response));})
+  .catch(error =>  {  
+  alert('Your profile could not be edited\nError: '+error.message); });
 };
 
 export const deleteBook = (_id) => (dispatch) => {
@@ -144,6 +216,16 @@ export const editBookdispatch = (books) => ({
   payload: books
 });
 
+export const editUserdispatch = (USER) => ({
+  type: ActionTypes.EDIT_USER,
+  payload: USER
+});
+
+export const editPasswordDispatch = (CREDS) => ({
+  type: ActionTypes.EDIT_PASSWORD,
+  payload: CREDS
+})
+
 export const deleteBookdispatch = (resp) => ({
   type: ActionTypes.DELETE_BOOK,
   payload: resp
@@ -173,8 +255,7 @@ export const loginError = (message) => {
 
 export const loginUser = (creds) => (dispatch) => {
 
-  dispatch(requestLogin(creds))
-
+  dispatch(requestLogin(creds));
   return fetch(baseUrl + 'users/login', {
       method: 'POST',
       headers: { 

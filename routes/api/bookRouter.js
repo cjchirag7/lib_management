@@ -25,7 +25,7 @@ bookRouter.route('/')
         console.log('Book created'+book);
         res.statusCode=200;
         res.setHeader('Content-Type','application/json');
-        res.json({book: book, success: true});
+        res.json(book);
     },(err)=>(next(err)))
     .catch((err)=>(next(err))) 
 })

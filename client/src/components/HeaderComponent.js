@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Navbar, Form, FormGroup, Label, Input, Nav, NavbarToggler,Collapse,NavItem, NavbarBrand, Modal, ModalBody, ModalHeader, Button} from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import {Dropdown,DropdownItem,DropdownMenu,DropdownToggle} from 'reactstrap';
+import { NavLink,Link } from 'react-router-dom';
 import { Control, LocalForm, Errors  } from 'react-redux-form';
 
 const required = (val) => val && val.length;
@@ -33,13 +34,19 @@ class Header extends Component{
         this.state={
          isNavOpen: false,
          isModalOpen: false,
-         isRegisterOpen: false
+         isRegisterOpen: false,
+         dropdownOpen: false
            }
         this.toggleModal=this.toggleModal.bind(this);
         this.toggleNav=this.toggleNav.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.toggleRegister=this.toggleRegister.bind(this);
+        this.toggle=this.toggle.bind(this);
+    }
+
+    toggle(){
+        this.setState({dropdownOpen: !this.state.dropdownOpen});
     }
     toggleNav(){
         this.setState({
@@ -73,7 +80,7 @@ class Header extends Component{
     render(){
         return (
             <React.Fragment>
-                 <Navbar color="dark" dark expand="md" fixed="top">
+                 <Navbar color="dark" dark expand="xl" fixed="top">
                     <div className="container">
                      <NavbarToggler onClick={this.toggleNav}></NavbarToggler>
                      <NavbarBrand className="mr-auto text-primary" href="/home">
@@ -86,16 +93,81 @@ class Header extends Component{
                                <span className="fa fa-home fa-lg"/> Home
                            </NavLink>
                         </NavItem>
+                        {this.props.auth.userinfo&&this.props.auth.userinfo.admin?(
+                            <NavItem className="">
+                            <Dropdown  isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                            <DropdownToggle color="Primary">
+                            <div className="text-primary">
+                                                    <span className="fa fa-book fa-lg"/> Books
+                                                   &nbsp; <i className="fa fa-caret-down fa-sm" aria-hidden="true"></i>
+
+                                                </div>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem tag={Link} to="/books">View / Modify books</DropdownItem>
+                              <DropdownItem divider/>
+                              <DropdownItem tag={Link} to="/add_book" >Add book</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                          </NavItem>
+                        ):(
+                            <NavItem className="ml-2">
+                                  <NavLink className="nav-link text-primary" to="/books">
+                                                    <span className="fa fa-book fa-lg"/> Books
+                                                </NavLink>
+                              </NavItem>
+    
+                        )}
+                        
                         <NavItem className="ml-2">
-                            <NavLink className="nav-link text-primary" to="/books">
-                                <span className="fa fa-book fa-lg"/> Books
-                            </NavLink>
                         </NavItem>
                         <NavItem className="ml-2">
                             <NavLink className="nav-link text-primary" to="/search">
                                 <span className="fa fa-search fa-lg"/> Search
                             </NavLink>
                         </NavItem>
+                        {
+                            (this.props.auth.isAuthenticated)?(
+                                <NavItem className="ml-2">
+                                <NavLink className="nav-link text-primary" to="/profile">
+                                     <span className="fa fa-user-circle-o fa-lg"/> My Profile
+                                </NavLink>
+                                </NavItem>
+                            ):
+                            (<div/>)
+                        }
+                        {
+                            (this.props.auth.isAuthenticated&&!this.props.auth.userinfo.admin)?(
+                                <NavItem className="ml-2">
+                               <NavLink className="nav-link text-primary" to="/history">
+                                     <span className="fa fa-history"/> Issue history
+                                </NavLink>
+                                </NavItem>
+                            ):
+                            (<div/>)
+                        }
+                         {
+                            (this.props.auth.isAuthenticated&&this.props.auth.userinfo.admin)?(
+                              <React.Fragment>
+                                <NavItem className="ml-2">
+                                <NavLink className="nav-link text-primary" to="/issue">
+                                     <span className="fa fa-plus-square"/> Issue Book
+                                </NavLink>
+                                </NavItem>
+                                <NavItem className="ml-2">
+                                <NavLink className="nav-link text-primary" to="/logs">
+                                   <span className="fa fa-list-ul"/> Return Book
+                                </NavLink>
+                                </NavItem>
+                                <NavItem className="ml-2">
+                                <NavLink className="nav-link text-primary" to="/history">
+                                   <span className="fa fa-info-circle"/> Stats
+                                </NavLink>
+                                </NavItem>
+                              </React.Fragment>
+                            ):
+                            (<div/>)
+                        }
                      </Nav>
                      <Nav className="ml-auto" navbar>
                      <NavItem>
@@ -153,14 +225,6 @@ class Header extends Component{
                      </ModalHeader>
                      <ModalBody>
                      <LocalForm model="user" onSubmit={(values) => {
-                   /*      if((this.username.value.trim()=="")||(this.password.value.trim()=="")
-                         ||(this.roll.value.trim()=="")||(this.email.value.trim()=="")
-                         ||(this.firstname.value.trim()=="")||(this.lastname.value.trim()==""))
-                         {
-                             alert('Fill all the required * fields');
-                         }
-                         else if(this.email.value.trim)
-                        */
                            this.toggleRegister();
                             this.props.registerUser({
                               username: values.username,

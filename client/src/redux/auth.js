@@ -37,6 +37,7 @@ const Auth = (state = {
                 isLoading: true,
                 isAuthenticated: true
             };
+            
         case ActionTypes.LOGOUT_SUCCESS:
             return {...state,
                 isLoading: false,
@@ -45,6 +46,16 @@ const Auth = (state = {
                 user: null,
                 userinfo: null
             };
+
+        case ActionTypes.EDIT_USER:
+            return {...state,
+                userinfo: action.payload};
+
+        case ActionTypes.EDIT_PASSWORD:
+            return {
+                ...state,
+                user: action.payload
+            }
         default:
             return state
     }
