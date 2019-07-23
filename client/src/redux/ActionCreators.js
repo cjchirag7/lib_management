@@ -143,7 +143,7 @@ email: email  };
     localStorage.setItem('userinfo', JSON.stringify(response));
     return dispatch(editUserdispatch(response));})
   .catch(error =>  {  
-  alert('Your profile could not be edited\nError: '+error.message); });
+  alert('Your profile could not be edited\nError: '+error.message+'\n May be someone has already registered with that Roll No.'); });
 };
 
 export const deleteBook = (_id) => (dispatch) => {
@@ -340,8 +340,8 @@ export const loginUser = (creds) => (dispatch) => {
       }
   })
   .catch(error => {
-    alert(error.message);
-    return dispatch(loginError(error.message));})
+    alert(error.message+'\n'+"Username and password didn't match");
+     return dispatch(loginError(error.message));})
 };
 
 export const registerUser = (creds) => (dispatch) => {
