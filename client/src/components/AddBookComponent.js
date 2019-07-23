@@ -52,13 +52,12 @@ render(){
     else
  return (
     <div className="container">
-    <div className="row row justify-content-center heading">
+    <div className="row justify-content-center heading">
     <div className="col-12">
   <h3 align="center">  Add a book</h3>
   </div>
-    <hr/>
     </div>
-    <div className="row row justify-content-center">
+    <div className="row row-content justify-content-center">
     <LocalForm onSubmit={(values) => {
         this.props.postBook(values.name, values.author, values.description, values.isbn, values.cat, values.floor, values.shelf, values.copies);
     }}>
@@ -178,7 +177,7 @@ render(){
                             </Col>
                         </Row>
                         
-                        <Row className="form-group">
+                        <Row className="form-group text-center justify-content-center">
                                 <Label htmlFor="shelf" md={3}> Shelf</Label>
                                 <Col md={6}>
                                     <Control.text model=".shelf" id="shelf" name="shelf"

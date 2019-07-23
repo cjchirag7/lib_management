@@ -66,13 +66,12 @@ render(){
     }
     return (
     <div className="container full">
-    <div className="row row justify-content-center heading">
+    <div className="row justify-content-center heading">
     <div className="col-12">
   <h3 align="center">  Issue book</h3>
   </div>
-    <hr/>
     </div>
-    <div className="row row justify-content-center">
+    <div className="row row-content justify-content-center">
     <Form onSubmit={(e) => {
         let bookid=this.props.books.filter((book)=>(book.isbn===this.state.isbn))[0]._id
         let studentid=this.props.users.filter((user)=>(user.roll===this.state.roll))[0]._id;
@@ -81,20 +80,20 @@ render(){
     }}>
 
         <FormGroup row>
-          <Label htmlFor="isbn">ISBN No. of book</Label>
+          <Label htmlFor="isbn"> ISBN No. of book</Label>
             <Input type="select" defaultValue={defaultBook.name} name="isbn" id="isbn" className="form-control" onInput={(e)=>{this.setState({isbn: e.target.value})}}>
                   {bookoptions}
             </Input>
         </FormGroup>
         <FormGroup row>
-          <Label htmlFor="roll">Roll No. of student </Label>
+          <Label htmlFor="roll"> Roll No. of student </Label>
             <Input type="select" id="roll" 
                    className="form-control" onInput={(e)=>{this.setState({roll: e.target.value})}}>
                    {useroptions}
             </Input>
         </FormGroup>
         <FormGroup row>
-          <Label htmlFor="name">Name of book </Label>
+          <Label htmlFor="name"> Name of book </Label>
              <Input type="text" id="name" name="name"
                     placeholder="Name of Book" defaultValue={defaultBook.name}
                     value={!this.state.isbn?''
@@ -102,7 +101,7 @@ render(){
                     className="form-control" disabled/>
         </FormGroup>
         <FormGroup row>
-          <Label htmlFor="author">Authors </Label>
+          <Label htmlFor="author"> Authors </Label>
             <Input type="text" id="author" name="author"
                    placeholder="Name of authors" 
                    defaultValue={defaultBook.author}
@@ -111,7 +110,7 @@ render(){
                     className="form-control" disabled/>
          </FormGroup>
          <FormGroup row>
-          <Label htmlFor="name_student">Name of student </Label>
+          <Label htmlFor="name_student"> Name of student </Label>
             <Input type="text" id="name_student" name="name_student"
                    placeholder="Name of student" 
                    defaultValue={defaultUser.firstname+' '+defaultUser.lastname}
@@ -121,7 +120,7 @@ render(){
                     className="form-control" disabled/>
          </FormGroup>
          <FormGroup row>
-          <Label htmlFor="username">Username of student </Label>
+          <Label htmlFor="username"> Username of student </Label>
             <Input type="text" id="username" name="username"
                    placeholder="Username of student" 
                    defaultValue={defaultUser.username}
