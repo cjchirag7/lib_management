@@ -419,7 +419,7 @@ export const postIssue = (bookId,studentId) => (dispatch) => {
       return  dispatch(addIssue(response));})
     .catch(error =>  {
       alert('Book could not be issued\nError: '+error.message+'\n'+
-      'May be the student has already issued 3 books. Please return them first. \n'+
+      'May be the student has already issued 3 books and not returned. Please return them first. \n'+
       'or the book may not available. You can wait for some days, until the book is returned to library.'); });
 };
 

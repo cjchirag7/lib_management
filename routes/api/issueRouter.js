@@ -53,7 +53,8 @@ issueRouter.route('/')
                    student: req.body.student 
                 })
                 .then((issues)=>{
-                    if(issues&&issues.length>=3){
+                    notReturned=issues.filter((issue)=>(!issue.returned));
+                    if(notReturned&&notReturned.length>=3){
                         err = new Error(`The student has already issued 3 books. Please return them first`);
                         err.status = 400;
                         return next(err);
