@@ -65,7 +65,6 @@ class Header extends Component{
       this.toggleModal();
       this.props.loginUser({username: this.username.value, password: this.password.value});
       event.preventDefault();
-
   }
 
   handleLogout() {
@@ -155,12 +154,12 @@ class Header extends Component{
                                 </NavLink>
                                 </NavItem>
                                 <NavItem className="ml-2">
-                                <NavLink className="nav-link text-primary" to="/logs">
+                                <NavLink className="nav-link text-primary" to="/return">
                                    <span className="fa fa-list-ul"/> Return Book
                                 </NavLink>
                                 </NavItem>
                                 <NavItem className="ml-2">
-                                <NavLink className="nav-link text-primary" to="/history">
+                                <NavLink className="nav-link text-primary" to="/stats">
                                    <span className="fa fa-info-circle"/> Stats
                                 </NavLink>
                                 </NavItem>

@@ -51,7 +51,6 @@ class BookDetail extends Component {
         window.scrollTo(0, 0)
       }
 render(){
-  console.log(this.props.errMess);
   if (this.props.isLoading) {
     return(
         <div className="container">

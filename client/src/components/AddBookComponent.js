@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Button, Label, Col, Row} from 'reactstrap';
 import { Control, LocalForm, Errors  } from 'react-redux-form';
+import Loading from './LoadingComponent';
 
 const required = (val) => val && val.length;
 const requiredNum = (val) => !!(val);
@@ -16,9 +17,39 @@ class AddBook extends Component {
         super(props);
         this.state={
         }
+
     }
+    
+    componentDidMount() {
+        window.scrollTo(0, 0)
+      }
 
 render(){
+    let uniqueIsbn=(val) =>(!this.props.books.some((book)=>(book.isbn===val)))
+    let uniqueName=(val) =>(!this.props.books.some((book)=>(book.name===val)))
+
+    if (this.props.booksLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (this.props.booksErrMess) {
+        return(
+            <div className="container loading">
+                <div className="row heading"> 
+                    <div className="col-12">
+                        <br/><br/><br/><br/>
+                        <h3>{this.props.booksErrMess}</h3>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    else
  return (
     <div className="container">
     <div className="row row justify-content-center heading">
@@ -38,7 +69,7 @@ render(){
                                         placeholder="Name of book"
                                         className="form-control"
                                         validators={{
-                                            required, minLength: minLength(3)
+                                            required, minLength: minLength(3),uniqueName
                                         }}
                                          />
                                     <Errors
@@ -47,7 +78,8 @@ render(){
                                         show="touched"
                                         messages={{
                                             required: 'Required',
-                                            minLength: ' Must be greater than 2 characters'
+                                            minLength: ' Must be greater than 2 characters',
+                                            uniqueName: ' There exists a book with this name already'
                                         }}
                                      />
                                 </Col>
@@ -78,7 +110,8 @@ render(){
                                         placeholder="ISBN no. of book"
                                         className="form-control"
                                         validators={{
-                                            required, minLength: minLength(10), maxLength: maxLength(13), isNumber
+                                            required, minLength: minLength(10), maxLength: maxLength(13), isNumber,
+                                            uniqueIsbn
                                         }}
                                          />
                                     <Errors
@@ -89,7 +122,8 @@ render(){
                                             required: 'Required',
                                             minLength: ' Must be greater than 9 numbers',
                                             maxLength: ' Must be 13 numbers or less',
-                                            isNumber: ' Must be a number'
+                                            isNumber: ' Must be a number',
+                                            uniqueIsbn: ' There exists a book with this ISBN No.'
                                         }}
                                      />
                                 </Col>

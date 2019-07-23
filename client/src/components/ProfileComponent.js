@@ -20,6 +20,10 @@ class Profile extends Component {
         this.togglePasswordModal=this.togglePasswordModal.bind(this);
     }
 
+    componentDidMount() {
+        window.scrollTo(0, 0)
+      }
+
     togglePasswordModal(){
         this.setState({
             isPasswordModalOpen: !this.state.isPasswordModalOpen

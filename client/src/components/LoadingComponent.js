@@ -7,7 +7,7 @@ const Loading = () => {
             <br/><br/>
             <h1 align="center">
             <span className="fa fa-spinner fa-pulse fa-3x fa-fw text-primary"></span>
-            <br/>
+            <br/><br/>
             Loading ....</h1>
         </div>
     );

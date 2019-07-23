@@ -3,7 +3,7 @@ import { Table } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import Loading from './LoadingComponent.js';
 
-// RenderMenuItem is a functional component
+// RenderBook is a functional component
 function RenderBook ({book, changeSelected ,isAdmin, toggleDeleteModal,toggleEditModal,i}) {
     return (
             <React.Fragment>
@@ -58,7 +58,7 @@ render(){
                 </tr>
         );
     });
-    console.log(this.props.auth);
+
     if (this.props.booksLoading) {
         return(
             <div className="container">
