@@ -49,9 +49,11 @@ class Header extends Component{
         this.setState({dropdownOpen: !this.state.dropdownOpen});
     }
     toggleNav(){
+        if(window.innerWidth<1200){
         this.setState({
             isNavOpen: !this.state.isNavOpen
         });
+    }
     }
 
     toggleRegister(event){
@@ -87,7 +89,7 @@ class Header extends Component{
                      </NavbarBrand>
                      <Collapse isOpen={this.state.isNavOpen} navbar>
                      <Nav navbar>
-                        <NavItem className="ml-2">
+                        <NavItem className="ml-2" onClick={this.toggleNav}>
                             <NavLink className="nav-link text-primary" to="/home">
                                <span className="fa fa-home fa-lg"/> Home
                            </NavLink>
@@ -95,7 +97,7 @@ class Header extends Component{
                         {this.props.auth.userinfo&&this.props.auth.userinfo.admin?(
                             <NavItem className="">
                             <Dropdown  isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                            <DropdownToggle color="Primary">
+                            <DropdownToggle color="Primary" >
                             <div className="text-primary">
                                                     <span className="fa fa-book fa-lg"/> Books
                                                    &nbsp; <i className="fa fa-caret-down fa-sm" aria-hidden="true"></i>
@@ -103,14 +105,14 @@ class Header extends Component{
                                                 </div>
                             </DropdownToggle>
                             <DropdownMenu>
-                              <DropdownItem tag={Link} to="/books">View / Modify books</DropdownItem>
+                              <DropdownItem onClick={this.toggleNav} tag={Link} to="/books">View / Modify books</DropdownItem>
                               <DropdownItem divider/>
-                              <DropdownItem tag={Link} to="/add_book" >Add book</DropdownItem>
+                              <DropdownItem onClick={this.toggleNav} tag={Link} to="/add_book" >Add book</DropdownItem>
                             </DropdownMenu>
                           </Dropdown>
                           </NavItem>
                         ):(
-                            <NavItem className="ml-2">
+                            <NavItem className="ml-2" onClick={this.toggleNav}>
                                   <NavLink className="nav-link text-primary" to="/books">
                                                     <span className="fa fa-book fa-lg"/> Books
                                                 </NavLink>
@@ -118,16 +120,14 @@ class Header extends Component{
     
                         )}
                         
-                        <NavItem className="ml-2">
-                        </NavItem>
-                        <NavItem className="ml-2">
+                        <NavItem className="ml-2" onClick={this.toggleNav}>
                             <NavLink className="nav-link text-primary" to="/search">
                                 <span className="fa fa-search fa-lg"/> Search
                             </NavLink>
                         </NavItem>
                         {
                             (this.props.auth.isAuthenticated)?(
-                                <NavItem className="ml-2">
+                                <NavItem onClick={this.toggleNav} className="ml-2">
                                 <NavLink className="nav-link text-primary" to="/profile">
                                      <span className="fa fa-user-circle-o fa-lg"/> My Profile
                                 </NavLink>
@@ -137,7 +137,7 @@ class Header extends Component{
                         }
                         {
                             (this.props.auth.isAuthenticated&&!this.props.auth.userinfo.admin)?(
-                                <NavItem className="ml-2">
+                                <NavItem onClick={this.toggleNav} className="ml-2">
                                <NavLink className="nav-link text-primary" to="/history">
                                      <span className="fa fa-history"/> Issue history
                                 </NavLink>
@@ -148,17 +148,17 @@ class Header extends Component{
                          {
                             (this.props.auth.isAuthenticated&&this.props.auth.userinfo.admin)?(
                               <React.Fragment>
-                                <NavItem className="ml-2">
+                                <NavItem onClick={this.toggleNav} className="ml-2">
                                 <NavLink className="nav-link text-primary" to="/issue">
                                      <span className="fa fa-plus-square"/> Issue Book
                                 </NavLink>
                                 </NavItem>
-                                <NavItem className="ml-2">
+                                <NavItem onClick={this.toggleNav} className="ml-2">
                                 <NavLink className="nav-link text-primary" to="/return">
                                    <span className="fa fa-list-ul"/> Return Book
                                 </NavLink>
                                 </NavItem>
-                                <NavItem className="ml-2">
+                                <NavItem onClick={this.toggleNav} className="ml-2">
                                 <NavLink className="nav-link text-primary" to="/stats">
                                    <span className="fa fa-info-circle"/> Stats
                                 </NavLink>
