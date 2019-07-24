@@ -143,7 +143,7 @@ email: email  };
     localStorage.setItem('userinfo', JSON.stringify(response));
     return dispatch(editUserdispatch(response));})
   .catch(error =>  {  
-  alert('Your profile could not be edited\nError: '+error.message+'\n May be someone has already registered with that Roll No.'); });
+  alert('Your profile could not be edited\nError: '+error.message+'\n May be someone has already registered with that Roll No. or Email'); });
 };
 
 export const deleteBook = (_id) => (dispatch) => {
@@ -379,7 +379,7 @@ export const registerUser = (creds) => (dispatch) => {
       }
   })
   .catch(error => alert(error.message+'\n'+
-      'May be someone has already registered with that username or Roll No.\nTry Entering a new username or Roll No. '))
+      'May be someone has already registered with that username, email or Roll No.\nTry Entering a new username,email or Roll No. '))
 };
 
 export const addIssue = (issue) => ({
