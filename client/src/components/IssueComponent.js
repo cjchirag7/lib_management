@@ -54,7 +54,7 @@ render(){
     else
    {
     const bookoptions= this.props.books.map((book,index)=>(<option 
-    key={book.isb}>{book.isbn}</option>));
+    key={book.isbn}>{book.isbn}</option>));
     const defaultBook=this.props.books[0];
     // To just get list of the students (not the admins)
     let useroptions=this.props.users.filter((user)=>(!user.admin));
