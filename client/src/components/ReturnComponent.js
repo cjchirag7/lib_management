@@ -35,12 +35,12 @@ function RenderIssue ({issue,i,returnBook}) {
             {issue.student.roll}
             </td>
             <td>
-            <Link to={`/books/${issue.book._id}`}>
+                {issue.book==null ? "N/A":<Link to={`/books/${issue.book._id}`}>
             {issue.book.name}
-            </Link>
+            </Link>}
             </td>
             <td>
-            {issue.book.isbn}
+            {issue.book==null ? "N/A":issue.book.isbn}     
             </td>
             <td>
                 {new Intl.DateTimeFormat('en-US',{year: 'numeric', month: 'short', day: '2-digit'}).format(new Date( Date.parse(issue.createdAt)))}
@@ -76,7 +76,7 @@ class Return extends Component {
       }
 
 render(){
-
+    console.log(this.props.issues);
     if (this.props.issues.isLoading) {
         return(
             <div className="container">
