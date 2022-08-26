@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "font-awesome": "^4.7.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.4",
+    "mongoose": "^6.4.6",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local-mongoose": "^6.1.0"
